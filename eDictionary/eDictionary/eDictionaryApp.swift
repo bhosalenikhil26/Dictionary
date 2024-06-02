@@ -11,7 +11,22 @@ import SwiftUI
 struct eDictionaryApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DictionaryView(viewModel: getDictionaryViewModel())
         }
+    }
+
+    private func getDictionaryViewModel() -> some DictionaryViewModelProtocol {
+        DictionaryViewModel(
+            wordsLoaderService:
+                WordsLoaderService(
+                    apiWordsLoaderService:
+                        APIWordsLoaderService(
+                            dispatcher:
+                                APIRequestDispatcher()
+                        ),
+                    persisterService: SQLitePersister()
+                )
+        )
+
     }
 }
