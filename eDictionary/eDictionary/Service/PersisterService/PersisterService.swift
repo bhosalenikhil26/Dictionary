@@ -10,9 +10,10 @@ import SQLite
 
 protocol PersisterServiceProtocol {
     func persistWord(_ wordString: String)
-    func deleteWord(_ word: String)
+    func removeWordFromDictionary(_ word: String)
     func removePersistedData()
-    func fetchWords(startingWith letter: Character) -> [String]
+    func fetchWords() -> [Character: [String]]
+    func isDataPresent() -> Bool
 }
 
 enum PersisterError: Error {
@@ -46,9 +47,7 @@ private extension SQLitePersister {
     }
 
     func createTablesForAllAlphabets() throws {
-        let alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-        for letter in alphabet {
+        for letter in String.alphabet {
             try createTable(for: letter)
         }
     }
@@ -73,13 +72,74 @@ private extension SQLitePersister {
             throw PersisterError.failedToCreateTable
         }
     }
+
+    func isTableNonEmpty(for letter: Character) -> Bool {
+        guard let database else { return false }
+
+        let tableName = "words_\(letter)"
+        let wordsTable = Table(tableName)
+
+        do {
+            let count = try database.scalar(wordsTable.count)
+            return count > 0
+        } catch {
+            print("Failed to check rows in table \(tableName): \(error)")
+            return false
+        }
+    }
+
+    func getWordsFromTable(for letter: Character) -> [String] {
+        guard let database else { return [] }
+        let tableName = "words_\(letter)"
+        let wordsTable = Table(tableName)
+        let word = Expression<String>("word")
+
+        do {
+            let query = wordsTable.select(word)
+            return try database.prepare(query).map { row in
+                return row[word]
+            }
+        } catch {
+            print("Failed to fetch words starting with \(letter): \(error)")
+            return []
+        }
+    }
+
+    func deleteWord(_ word: String) {
+        guard let database, let firstLetter = word.first else { return }
+        let tableName = "words_\(firstLetter)"
+        let wordsTable = Table(tableName)
+        let word = Expression<String>("word")
+
+        let deleteQuery = wordsTable.filter(word == word).delete()
+        do {
+            try database.run(deleteQuery)
+            print("Deleted word \(word) from table \(tableName).")
+        } catch {
+            print("Failed to delete word \(word) from table \(tableName): \(error)")
+        }
+    }
+
+    func dropTable(for letter: Character) {
+        guard let database else { return }
+
+        let tableName = "words_\(letter)"
+        let dropTableQuery = "DROP TABLE IF EXISTS \(tableName)"
+
+        do {
+            try database.run(dropTableQuery)
+            print("Dropped table \(tableName).")
+        } catch {
+            print("Failed to drop table \(tableName): \(error)")
+        }
+    }
 }
 
 extension SQLitePersister: PersisterServiceProtocol {
     func persistWord(_ wordString: String) {
         guard let database, let firstLetter = wordString.first else { return }
 
-        let tableName = "words_\(firstLetter.lowercased())"
+        let tableName = "words_\(firstLetter)"
         let wordsTable = Table(tableName)
         let word = Expression<String>("word")
 
@@ -91,7 +151,35 @@ extension SQLitePersister: PersisterServiceProtocol {
         }
     }
 
-    func deleteWord(_ word: String) {}
-    func removePersistedData() {}
-    func fetchWords(startingWith letter: Character) -> [String] { [] }
+    func removeWordFromDictionary(_ word: String) {
+        deleteWord(word)
+    }
+
+    func removePersistedData() {
+        for letter in String.alphabet {
+            dropTable(for: letter)
+        }
+    }
+
+    func fetchWords() -> [Character: [String]] {
+        var eDictionary = [Character: [String]]()
+
+        for letter in String.alphabet {
+            eDictionary[letter] = getWordsFromTable(for: letter)
+        }
+        return eDictionary
+    }
+
+    func isDataPresent() -> Bool {
+        for letter in String.alphabet {
+            if isTableNonEmpty(for: letter) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+extension String {
+    static let alphabet = "abcdefghijklmnopqrstuvwxyz"
 }
