@@ -78,7 +78,6 @@ extension APIServiceProtocol {
         guard let httpResponse = response.1 as? HTTPURLResponse, let statusCode = httpResponse.httpStatusCode else {
             throw APIError.invalidHTTPURLResponse
         }
-
         return APIServiceResponse(statusCode: statusCode, data: response.0)
     }
 }
@@ -89,7 +88,8 @@ struct APIServiceResponse {
 }
 
 extension APIServiceResponse {
-    func parse<T: Decodable>(data: Data, with strategy: JSONDecoder.KeyDecodingStrategy? = nil) throws -> T {
+    func parse<T: Decodable>(with strategy: JSONDecoder.KeyDecodingStrategy? = nil) throws -> T {
+        guard let data else { throw APIError.emptyData }
         let decoder = JSONDecoder()
         if let strategy {
             decoder.keyDecodingStrategy = strategy
