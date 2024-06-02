@@ -17,8 +17,9 @@ enum HTTPMethod: String {
 
 enum APIError: Error {
     case invalidUrl
-    case couldNotParseToSpecifiedModel
     case invalidHTTPURLResponse
+    case statusCodeNotHandled
+    case emptyData
 }
 
 protocol APIRequest {
@@ -60,7 +61,7 @@ protocol APIRequestDispatcherProtocol {
 
 final class APIRequestDispatcher: APIRequestDispatcherProtocol {
     public func execute(apiRequest: APIRequest) async throws -> (Data?, URLResponse?) {
-        var request = try apiRequest.urlRequest
+        let request = try apiRequest.urlRequest
         return try await URLSession.shared.data(for: request)
     }
 }
