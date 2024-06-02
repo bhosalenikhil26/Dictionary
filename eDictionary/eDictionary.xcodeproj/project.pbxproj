@@ -14,6 +14,8 @@
 		C0034F172C0B36B7004A83F5 /* eDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0034F162C0B36B7004A83F5 /* eDictionaryTests.swift */; };
 		C0034F212C0B36B7004A83F5 /* eDictionaryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0034F202C0B36B7004A83F5 /* eDictionaryUITests.swift */; };
 		C0034F232C0B36B7004A83F5 /* eDictionaryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0034F222C0B36B7004A83F5 /* eDictionaryUITestsLaunchTests.swift */; };
+		C0034F312C0B3784004A83F5 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0034F302C0B3784004A83F5 /* APIService.swift */; };
+		C0034F332C0CAF97004A83F5 /* HTTPStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0034F322C0CAF97004A83F5 /* HTTPStatusCode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		C0034F1C2C0B36B7004A83F5 /* eDictionaryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eDictionaryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0034F202C0B36B7004A83F5 /* eDictionaryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eDictionaryUITests.swift; sourceTree = "<group>"; };
 		C0034F222C0B36B7004A83F5 /* eDictionaryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eDictionaryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C0034F302C0B3784004A83F5 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		C0034F322C0CAF97004A83F5 /* HTTPStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPStatusCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,7 @@
 		C0034F042C0B36B6004A83F5 /* eDictionary */ = {
 			isa = PBXGroup;
 			children = (
+				C0034F2F2C0B3763004A83F5 /* Service */,
 				C0034F052C0B36B6004A83F5 /* eDictionaryApp.swift */,
 				C0034F072C0B36B6004A83F5 /* ContentView.swift */,
 				C0034F092C0B36B7004A83F5 /* Assets.xcassets */,
@@ -125,6 +130,15 @@
 				C0034F222C0B36B7004A83F5 /* eDictionaryUITestsLaunchTests.swift */,
 			);
 			path = eDictionaryUITests;
+			sourceTree = "<group>";
+		};
+		C0034F2F2C0B3763004A83F5 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				C0034F302C0B3784004A83F5 /* APIService.swift */,
+				C0034F322C0CAF97004A83F5 /* HTTPStatusCode.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +272,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0034F082C0B36B6004A83F5 /* ContentView.swift in Sources */,
+				C0034F312C0B3784004A83F5 /* APIService.swift in Sources */,
+				C0034F332C0CAF97004A83F5 /* HTTPStatusCode.swift in Sources */,
 				C0034F062C0B36B6004A83F5 /* eDictionaryApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
