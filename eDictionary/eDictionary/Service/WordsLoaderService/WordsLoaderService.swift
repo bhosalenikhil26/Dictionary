@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum WordsLoaderServiceError: Error {
     case stringConversionError
@@ -13,6 +14,8 @@ enum WordsLoaderServiceError: Error {
 }
 
 protocol WordsLoaderServiceProtocol {
+    var loadingStatePublisher: AnyPublisher<LoadingState, Never> { get }
+
     func loadWords() async throws
     func removeWordFromDictionary(_ word: String)
 }
@@ -21,18 +24,29 @@ final class WordsLoaderService {
     private let apiWordsLoaderService: APIWordsLoaderServiceProtocol
     private let persisterService: PersisterServiceProtocol?
     private var eDictionary: [Character: [String]] = [:]
+    private var loadingStateSubject: CurrentValueSubject<LoadingState, Never>
 
     init(apiWordsLoaderService: APIWordsLoaderServiceProtocol, persisterService: PersisterServiceProtocol?) {
         self.apiWordsLoaderService = apiWordsLoaderService
         self.persisterService = persisterService
+        loadingStateSubject = CurrentValueSubject(.notLoaded)
+        Task {
+            try? await loadWords()
+        }
     }
 }
 
 extension WordsLoaderService: WordsLoaderServiceProtocol {
+    var loadingStatePublisher: AnyPublisher<LoadingState, Never> {
+        loadingStateSubject.eraseToAnyPublisher()
+    }
+
     func loadWords() async throws {
+        loadingStateSubject.send(.loading)
         if let persisterService {
             guard !persisterService.isDataPresent() else {
                 eDictionary = persisterService.fetchWords()
+                loadingStateSubject.send(.loaded(eDictionary: eDictionary))
                 return
             }
         }
@@ -41,8 +55,10 @@ extension WordsLoaderService: WordsLoaderServiceProtocol {
             let dictionaryData = try await apiWordsLoaderService.loadWords(from: dictionaryUrlString)
             guard let dictionaryText = String(data: dictionaryData, encoding: .utf8) else { throw WordsLoaderServiceError.stringConversionError }
             storeWordsInLocalPersister(dictionaryText)
+            loadingStateSubject.send(.loaded(eDictionary: eDictionary))
         } catch {
             //Handle specific error if needed
+            loadingStateSubject.send(.failed)
             throw WordsLoaderServiceError.failedToLoadWords
         }
     }
@@ -73,4 +89,11 @@ private extension WordsLoaderService {
             }
         }
     }
+}
+
+enum LoadingState {
+    case notLoaded
+    case loading
+    case loaded(eDictionary: [Character: [String]])
+    case failed
 }

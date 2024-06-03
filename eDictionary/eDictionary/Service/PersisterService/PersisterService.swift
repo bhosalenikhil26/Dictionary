@@ -96,9 +96,10 @@ private extension SQLitePersister {
 
         do {
             let query = wordsTable.select(word)
-            return try database.prepare(query).map { row in
+            let fetchedWords = try database.prepare(query).map { row in
                 return row[word]
             }
+            return Array(fetchedWords.dropFirst())
         } catch {
             print("Failed to fetch words starting with \(letter): \(error)")
             return []
