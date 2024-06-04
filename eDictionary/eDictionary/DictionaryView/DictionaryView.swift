@@ -61,14 +61,18 @@ private extension DictionaryView {
         }
     }
 
-    func getList(for dictionary: [Character: [String]]) -> some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, pinnedViews: .sectionHeaders) {
-                ForEach(dictionary.keys.sorted(), id: \.self) { key in
-                    if let words = dictionary[key] {
-                        SectionView(title: String(key).capitalized, items: words)
-                    } else {
-                        EmptyView()
+    @ViewBuilder func getList(for dictionary: [Character: [String]]) -> some View {
+        if dictionary.isEmpty {
+            EmptyStateView(searchText: searchText)
+        } else {
+            ScrollView {
+                LazyVStack(alignment: .leading, pinnedViews: .sectionHeaders) {
+                    ForEach(dictionary.keys.sorted(), id: \.self) { key in
+                        if let words = dictionary[key] {
+                            SectionView(title: String(key).capitalized, items: words)
+                        } else {
+                            EmptyView()
+                        }
                     }
                 }
             }
