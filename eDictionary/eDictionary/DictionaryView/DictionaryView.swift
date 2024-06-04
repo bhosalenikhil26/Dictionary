@@ -58,22 +58,11 @@ private extension DictionaryView {
         ScrollView {
             LazyVStack(alignment: .leading, pinnedViews: .sectionHeaders) {
                 ForEach(dictionary.keys.sorted(), id: \.self) { key in
-                    /*Section {
-                        LazyVStack{
-                            ForEach(dictionary[key]!, id: \.self) { value in
-                                HStack {
-                                    Text(value)
-                                    Spacer()
-                                }
-                                .padding()
-                                .background(Color(.systemGray4))
-                                .cornerRadius(10)
-                            }
-                        }
-                    } header: {
-                        sectionHeader(for: key)
-                    }*/
-                    SectionView(title: String(key).capitalized, items: dictionary[key]!)
+                    if let words = dictionary[key] {
+                        SectionView(title: String(key).capitalized, items: words)
+                    } else {
+                        EmptyView()
+                    }
                 }
             }
         }
@@ -109,35 +98,4 @@ final class MockViewModel: DictionaryViewModelProtocol {
     )
 
     func refreshDictionary() {}
-}
-
-struct SectionView: View {
-    let title: String
-    let items: [String]
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text(title.capitalized)
-                    .font(.headline)
-                Spacer()
-            }
-            .padding()
-            LazyVStack{
-                ForEach(items, id: \.self) { item in
-                    HStack {
-                        Text(item)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal)
-                        Spacer()
-                    }
-                    .overlay(
-                        Divider(), alignment: .bottom
-                    )
-                }
-            }
-        }
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(8)
-    }
 }
