@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DictionaryView<ViewModel: DictionaryViewModelProtocol>: View {
     @StateObject var viewModel: ViewModel
+    @State private var searchText = ""
 
     var body: some View {
         NavigationView {
@@ -36,6 +37,12 @@ struct DictionaryView<ViewModel: DictionaryViewModelProtocol>: View {
                     refreshButton()
                 }
             }
+            .searchable(text: $searchText)
+            .onChange(of: searchText, perform: { newValue in
+                Task {
+                    await viewModel.search(for: searchText)
+                }
+            })
         }
     }
 }
@@ -97,5 +104,6 @@ final class MockViewModel: DictionaryViewModelProtocol {
         ]
     )
 
-    func refreshDictionary() {}
+    func refreshDictionary() async {}
+    func search(for query: String) async {}
 }
