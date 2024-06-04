@@ -22,6 +22,7 @@
 		C00480312C0F80300041F453 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00480302C0F80300041F453 /* SectionView.swift */; };
 		C03119122C0E491A000AEBCB /* LoadingCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03119112C0E491A000AEBCB /* LoadingCellView.swift */; };
 		C03119142C0E4990000AEBCB /* FailureCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03119132C0E4990000AEBCB /* FailureCellView.swift */; };
+		C0A8C8BA2C0F9BF800D65130 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8C8B92C0F9BF800D65130 /* EmptyStateView.swift */; };
 		C0A9A1A52C0CD09600688139 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A1A42C0CD09600688139 /* APIServiceTests.swift */; };
 		C0A9A1A92C0CEB8500688139 /* APIServiceResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A1A82C0CEB8500688139 /* APIServiceResponseTests.swift */; };
 		C0A9A1AB2C0CF2B400688139 /* APIWordsLoaderServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9A1AA2C0CF2B400688139 /* APIWordsLoaderServiceTests.swift */; };
@@ -66,6 +67,7 @@
 		C00480302C0F80300041F453 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		C03119112C0E491A000AEBCB /* LoadingCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCellView.swift; sourceTree = "<group>"; };
 		C03119132C0E4990000AEBCB /* FailureCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureCellView.swift; sourceTree = "<group>"; };
+		C0A8C8B92C0F9BF800D65130 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		C0A9A1A42C0CD09600688139 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
 		C0A9A1A82C0CEB8500688139 /* APIServiceResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceResponseTests.swift; sourceTree = "<group>"; };
 		C0A9A1AA2C0CF2B400688139 /* APIWordsLoaderServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIWordsLoaderServiceTests.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			children = (
 				C03119112C0E491A000AEBCB /* LoadingCellView.swift */,
 				C03119132C0E4990000AEBCB /* FailureCellView.swift */,
+				C0A8C8B92C0F9BF800D65130 /* EmptyStateView.swift */,
 			);
 			path = DictionaryCells;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				C03119142C0E4990000AEBCB /* FailureCellView.swift in Sources */,
 				C0034F312C0B3784004A83F5 /* APIService.swift in Sources */,
 				C03119122C0E491A000AEBCB /* LoadingCellView.swift in Sources */,
+				C0A8C8BA2C0F9BF800D65130 /* EmptyStateView.swift in Sources */,
 				C0A9A1B52C0D13DB00688139 /* DictionaryViewModel.swift in Sources */,
 				C0A9A1AD2C0CFD7E00688139 /* PersisterService.swift in Sources */,
 				C0034F332C0CAF97004A83F5 /* HTTPStatusCode.swift in Sources */,
